@@ -1,0 +1,6 @@
+{
+    "mongoURI":"mongodb+srv://Mridul:8512003434@cluster0-e80p5.mongodb.net/test?retryWrites=true&w=majority",
+    "jsonToken":"mysecretwenToken",
+    "githubClientID":"a9bf6c7b9b0c888a871e",
+    "githubSecret":"4957378d1d8b2a52cdd1c17f440cd4a8e0b9c492"
+}
