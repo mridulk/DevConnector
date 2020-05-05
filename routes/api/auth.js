@@ -10,7 +10,7 @@ router.get('/',auth,async(req,res)=>{
     
     try{
         const user=await User.findById(req.user.id).select('-password')
-    res.send(user)
+        res.send(user)
     }catch(arr){
         res.status(500).json({msg:err.message})
     }
@@ -23,21 +23,27 @@ router.post('/',[
     check('password','Password is required').exists()
 ],async(req,res)=>{
     //console.log(req.body);
-    const error=validationResult(req);
-    if(!error.isEmpty()){
-        res.status(400).json({error:error.array()})
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        res.status(400).json({errors:errors.array()})
     }
     const{email,password}=req.body
     try{
         //see if user exists
-        let user=await User.findOne({email});
-        if(!user){
-            return res.status(400).json({error:[{msg:"Invalid Email And Password"}]})
+        let user = await User.findOne({ email });
+
+        if (!user) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: 'Invalid Credentials' }] });
         }
-        //match the password
-        const com=await bcrypt.compare(password,user.password);
-        if(!com){
-           return  res.status(400).json({error:[{msg:"Invalid  Password"}]})
+  
+        const isMatch = await bcrypt.compare(password, user.password);
+  
+        if (!isMatch) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: 'Invalid Credentials' }] });
         }
         //json webtoken ,putting user id into token ,algo used:sh256
         const payload={

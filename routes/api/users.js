@@ -12,17 +12,19 @@ router.post('/',[
     check('password','Minimum length must be of 6 characters').isLength({min:6})
 ],async(req,res)=>{
     //console.log(req.body);
-    const error=validationResult(req);
-    if(!error.isEmpty()){
-        res.status(400).json({error:error.array()})
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
     const{name,email,password}=req.body
     try{
         //see if user exists
         let user=await User.findOne({name});
-        if(user){
-            return res.status(400).json({error:[{msg:"User Already Exists"}]})
-        }
+        if (user) {
+            return res
+              .status(400)
+              .json({ errors: [{ msg: 'User already exists' }] });
+          }
 
 
         //get user gravatar
