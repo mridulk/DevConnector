@@ -10,17 +10,20 @@ const { check, validationResult } = require('express-validator');
 //get current users profile
 //access:private
 router.get('/me', auth, async (req, res) => {
-  // res.send("Profile Here")
   try {
     const profile = await Profile.findOne({
-      user: req.user.id,
-    }).populate('user', ['name', 'avatar']);
+      user: req.user.id
+    });
+
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' });
     }
-    res.jsob(profile);
+
+    // only populate from user document if profile exists
+    res.json(profile.populate('user', ['name', 'avatar']));
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 });
 // Post api/profile

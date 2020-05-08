@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {setAlert} from './alert'
 import {
-    REGISTER_SUCCESS,REGISTER_FAIL,USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT
+    REGISTER_SUCCESS,REGISTER_FAIL,USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT,CLEAR_PROFILE
 } from './types'
 import setAuthToken from '../utils/setAuthToken'
 //Load User //hitting api/auth GET request it will give user data as the Response
@@ -84,5 +84,8 @@ export const login = (email, password) => async dispatch => {
   export const logout=()=>dispatch=>{
       dispatch({
           type:LOGOUT
+      })
+      dispatch({
+          type:CLEAR_PROFILE
       })
   }
